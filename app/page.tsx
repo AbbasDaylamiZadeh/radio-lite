@@ -1,9 +1,12 @@
-import {Button} from "@/components/ui/button";
+import AudioPlayer from "@/components/audio-player/audio-player";
+import { MusicProvider } from "@/context/music-context";
 
 export default function Home() {
   return (
-    <div className=" grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-    <Button >Salam</Button>
+    <div className="w-full h-dvh flex justify-center items-center bg-gradient-to-b  from-neutral-900 to-zinc-800">
+       <MusicProvider>
+      <AudioPlayer/>
+      </MusicProvider>
     </div>
   );
 }
