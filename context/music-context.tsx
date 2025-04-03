@@ -33,7 +33,7 @@ export const MusicProvider: React.FC<{ children: React.ReactNode }> = ({
     undefined
   );
 
-  const { get_music_ids, update_music_ids} = useMusicListStore();
+  const { get_music_ids, update_music_ids,reset_music_ids} = useMusicListStore();
 
   useEffect(() => {
     const get_ids_listened_before = get_music_ids();
@@ -41,13 +41,17 @@ export const MusicProvider: React.FC<{ children: React.ReactNode }> = ({
 
     const fetchData = async () => {
       try {
-        const response = await fetchNowPlayingMusic({
+        let response = await fetchNowPlayingMusic({
           played_ids: get_ids_listened_before,
         });
 
-
-        setMusicData(response.data);
+        if (response.GetMusicResponseStatusMessage === "NotFound Music") {
+          reset_music_ids();
+          response = await fetchNowPlayingMusic({ played_ids: [1] });
+        }
         update_music_ids(response.data?.id);
+        setMusicData(response.data);
+       
       } catch (error) {
         console.error("Error in fetching music:", error);
       }
