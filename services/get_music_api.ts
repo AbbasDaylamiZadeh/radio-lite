@@ -1,15 +1,25 @@
-import { MusicResponse } from "@/components/audio-player/types";
+import {MusicResponse} from "@/_components/audio-player/types";
 
 export const fetchNowPlayingMusic = async (data: object): Promise<MusicResponse> => {
-  // const res = await fetch(`${process.env.NEXT_PUBLIC_API}/get_music`, {
-  const res = await fetch(`https://radio.zohrabifar.ir/api/get_music`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      
-    },
-    body: JSON.stringify(data),
-    cache:  'no-store' 
-  },);
-  return await res.json();
+    try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_API}/get_music`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+            cache: 'no-store'
+        },);
+
+        if (!res.ok) {
+            throw new Error(`Failed to fetch music: ${res.statusText}`);
+        }
+
+
+        return (await res.json()) as MusicResponse;
+    } catch (error) {
+        console.error("Error in fetchNowPlayingMusic:", error);
+        throw error;
+    }
+
 };

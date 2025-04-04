@@ -15,7 +15,6 @@ export const useMusicController = () => {
     if (!audioRef.current) return;
     
     if (audioRef.current.paused) {
-
       setIsPlaying(true)
       audioRef.current.play().catch((err) => console.error("Playback error:", err));
     } else {
@@ -36,12 +35,13 @@ export const useMusicController = () => {
 
       if (response.GetMusicResponseStatusMessage === "NotFound Music") {
         reset_music_ids();
-        response = await fetchNowPlayingMusic({ played_ids: [1] });
+        response = await fetchNowPlayingMusic({ played_ids: [] });
       }
 
       if (response.data) {
         update_music_ids(response.data.id);
         setMusicData(response.data);
+        setIsPlaying(true)
 
         if (sourceRef.current) {
           sourceRef.current.src = response.data.url;

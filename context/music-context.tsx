@@ -1,12 +1,12 @@
 "use client";
-import { MusicData } from "@/components/audio-player/types";
+import { MusicData } from "@/_components/audio-player/types";
 import useMusicListStore from "@/hooks/useMusicListStore";
 import { fetchNowPlayingMusic } from "@/services/get_music_api";
 import React, { createContext, useEffect, useRef, useState } from "react";
+import {useMusicController} from "@/hooks/useMusicControllerStore";
 
 interface MusicContextType {
   musicData: MusicData | null;
-  musicListened: number[] | undefined;
   setMusicData: React.Dispatch<React.SetStateAction<MusicData | null>>;
   audioRef: React.RefObject<HTMLAudioElement | null>;
   sourceRef :React.RefObject<HTMLSourceElement | null>
@@ -29,15 +29,11 @@ export const MusicProvider: React.FC<{ children: React.ReactNode }> = ({
   const sourceRef = useRef<HTMLSourceElement | null>(null);
 
 
-  const [musicListened, setMusicListened] = useState<number[] | undefined>(
-    undefined
-  );
+  const { get_music_ids, update_music_ids,reset_music_ids,} = useMusicListStore();
 
-  const { get_music_ids, update_music_ids,reset_music_ids} = useMusicListStore();
 
   useEffect(() => {
     const get_ids_listened_before = get_music_ids();
-    setMusicListened(get_ids_listened_before);
 
     const fetchData = async () => {
       try {
@@ -47,7 +43,7 @@ export const MusicProvider: React.FC<{ children: React.ReactNode }> = ({
 
         if (response.GetMusicResponseStatusMessage === "NotFound Music") {
           reset_music_ids();
-          response = await fetchNowPlayingMusic({ played_ids: [1] });
+          response = await fetchNowPlayingMusic({ played_ids: [] });
         }
         update_music_ids(response.data?.id);
         setMusicData(response.data);
@@ -60,10 +56,37 @@ export const MusicProvider: React.FC<{ children: React.ReactNode }> = ({
     fetchData();
   }, []);
 
+
+  const nextMusicAtTheEndOfMusic=async()=>{
+    const get_ids_listened_before = get_music_ids();
+    try {
+      let response = await fetchNowPlayingMusic({
+        played_ids: get_ids_listened_before,
+      });
+      console.log( get_ids_listened_before )
+      if (response.GetMusicResponseStatusMessage === "NotFound Music") {
+        reset_music_ids();
+        response = await fetchNowPlayingMusic({ played_ids: [] });
+      }
+      update_music_ids(response.data?.id);
+      setMusicData(response.data);
+      if (sourceRef.current) {
+        sourceRef.current.src = response.data.url;
+      }
+      audioRef.current.load();
+      audioRef.current.play().catch((err) => console.error("Playback error:", err));
+
+
+    } catch (error) {
+      console.error("Error in fetching music:", error);
+    }
+  };
+
+
+
   return (
     <MusicContext
       value={{
-        musicListened,
         musicData,
         setMusicData,
         audioRef: audioRef as React.RefObject<HTMLAudioElement>,
@@ -75,7 +98,7 @@ export const MusicProvider: React.FC<{ children: React.ReactNode }> = ({
         <audio
           ref={audioRef}
           className="hidden"
-          onEnded={() => console.log("s")}
+          onEnded={() => nextMusicAtTheEndOfMusic()}
         >
           <source ref={sourceRef} src={musicData.url} type="audio/mpeg" />
           Your browser does not support the audio element.
