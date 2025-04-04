@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useMusic } from "@/context/music-context";
 import { Slider } from "../ui/slider";
-import { useMusicController } from "@/hooks/useControllerMuiscStore";
+import { useMusicController } from "@/hooks/useMusicControllerStore";
 
 const AudioProgressBar = () => {
   const { musicData, audioRef } = useMusic();
