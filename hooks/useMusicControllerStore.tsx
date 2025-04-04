@@ -1,6 +1,6 @@
 import {useMusic} from "@/context/music-context";
 import {fetchNowPlayingMusic} from "@/services/get_music_api";
-import {useCallback, useState} from "react";
+import {useCallback, useState, useEffect} from "react";
 import useMusicListStore from "./useMusicListStore";
 
 export const useMusicController = () => {
@@ -9,6 +9,34 @@ export const useMusicController = () => {
     const {update_music_ids, get_music_ids, reset_music_ids} = useMusicListStore();
 
     const [isPlaying, setIsPlaying] = useState(false)
+
+
+    useEffect(() => {
+        if (!audioRef.current) return;
+        
+        const audio = audioRef.current;
+        
+        // Event handlers to keep isPlaying in sync with actual audio state
+        const handlePlay = () => setIsPlaying(true);
+        const handlePause = () => setIsPlaying(false);
+        const handleEnded = () => setIsPlaying(false);
+        
+        // Add event listeners
+        audio.addEventListener('play', handlePlay);
+        audio.addEventListener('pause', handlePause);
+        audio.addEventListener('ended', handleEnded);
+        
+        // Initial state sync
+        setIsPlaying(!audio.paused);
+        
+        // Cleanup
+        return () => {
+            audio.removeEventListener('play', handlePlay);
+            audio.removeEventListener('pause', handlePause);
+            audio.removeEventListener('ended', handleEnded);
+        };
+    }, [audioRef]);
+
 
     const handlePlayPause = useCallback(() => {
         if (!audioRef.current) return;
@@ -24,7 +52,7 @@ export const useMusicController = () => {
         }
 
 
-    }, []);
+    }, [audioRef]);
 
     const handleNextMusic = useCallback(async () => {
         if (!audioRef.current) return;
