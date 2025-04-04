@@ -3,7 +3,7 @@ import { Button } from "../ui/button";
 
 import { FaCirclePlay, FaCirclePause } from "react-icons/fa6";
 import { BiSolidSkipNextCircle } from "react-icons/bi";
-import { useMusicController } from "@/hooks/useControllerMuiscStore";
+import { useMusicController } from "@/hooks/useMusicControllerStore";
 
 const AudioController = () => {
 
