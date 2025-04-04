@@ -6,6 +6,7 @@ export const fetchNowPlayingMusic = async (data: object): Promise<MusicResponse>
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      
     },
     body: JSON.stringify(data),
     cache:  'no-store' 
