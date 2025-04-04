@@ -1,4 +1,4 @@
-import { useState } from "react";
+import {useState} from "react";
 
 const useMusicListStore = () => {
   const [playedIds, setPlayedIds] = useState<number[]>(() => {
@@ -21,8 +21,7 @@ const useMusicListStore = () => {
       const toNumberMusicIds: number[] = (
         JSON.parse(listenMusicIds) as string[]
       ).map((item: string) => {
-        const num = Number(item);
-        return  num;
+        return  Number(item);
       });
 
       if (toNumberMusicIds.length > 0) {
