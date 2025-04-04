@@ -20,6 +20,7 @@ const timer_constant = [
     {id: 4, title: 30, toSecond: 1800},
     {id: 5, title: 40, toSecond: 2400},
     {id: 6, title: 60, toSecond: 3600},
+
 ];
 
 
