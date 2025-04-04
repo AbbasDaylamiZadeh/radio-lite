@@ -11,10 +11,10 @@ const {handleNextMusic,handlePlayPause,isPlaying}=useMusicController()
 
 
   return (
-    <div className="flex translate-y-4  items-center gap-2">
+    <div className="flex translate-y-2 sm:translate-y-4  items-center gap-2">
       <Button
         variant="outline"
-        className="border-none rounded-full  text-white group"
+        className="border-none size-8 sm:size-10 rounded-full  text-white group"
         size="icon"
         onClick={()=>handlePlayPause()}
       >
@@ -26,7 +26,7 @@ const {handleNextMusic,handlePlayPause,isPlaying}=useMusicController()
       </Button>
       <Button
         variant="outline"
-        className="border-none transition-all duration-150 rounded-full text-white  group"
+        className="border-none size-8 sm:size-10  transition-all duration-150 rounded-full text-white  group"
         size="icon"
         onClick={()=>handleNextMusic()}
       >
