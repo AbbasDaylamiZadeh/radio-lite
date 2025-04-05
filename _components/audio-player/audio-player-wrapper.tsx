@@ -1,5 +1,5 @@
 import React from 'react';
-import LikedButton from "@/_components/audio-player/liked-button";
+import LikedDislikedButton from "@/_components/audio-player/liked-disliked-button";
 import Thumbnail from "@/_components/audio-player/thumbnail";
 import ImageSkeleton from "@/_components/image-skeleton";
 import MusicTitle from "@/_components/audio-player/music-title";
@@ -15,7 +15,7 @@ const AudioPlayerWrapper = () => {
         <>
             <header className="h-52 relative ">
                 <div className="pt-5 px-5 absolute w-full z-10">
-                    <LikedButton/>
+                    <LikedDislikedButton/>
                 </div>
                 {musicData ?
                     <Thumbnail

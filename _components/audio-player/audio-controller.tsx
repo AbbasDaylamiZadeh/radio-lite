@@ -4,10 +4,12 @@ import { Button } from "../ui/button";
 import { FaCirclePlay, FaCirclePause } from "react-icons/fa6";
 import { BiSolidSkipNextCircle } from "react-icons/bi";
 import { useMusicController } from "@/hooks/useMusicControllerStore";
+import AutoStopTimer from "@/_components/audio-player/auto-stop-timer";
 
 const AudioController = () => {
 
 const {handleNextMusic,handlePlayPause,isPlaying}=useMusicController()
+
 
 
   return (
@@ -32,7 +34,7 @@ const {handleNextMusic,handlePlayPause,isPlaying}=useMusicController()
       >
         <BiSolidSkipNextCircle className="size-7 group-hover:size-8" />
       </Button>
-
+        <AutoStopTimer/>
     </div>
   );
 };

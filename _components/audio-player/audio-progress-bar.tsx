@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { useMusic } from "@/context/music-context";
 import { Slider } from "../ui/slider";
 import { useMusicController } from "@/hooks/useMusicControllerStore";
+import AutoStopTimer from "@/_components/audio-player/auto-stop-timer";
 
 const AudioProgressBar = () => {
   const { musicData, audioRef } = useMusic();
